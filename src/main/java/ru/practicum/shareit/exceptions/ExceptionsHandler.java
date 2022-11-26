@@ -37,7 +37,7 @@ public class ExceptionsHandler {
 
     @Getter
     @RequiredArgsConstructor
-    static class ErrorMessage{
+    static class ErrorMessage {
         private final String message;
     }
 }
