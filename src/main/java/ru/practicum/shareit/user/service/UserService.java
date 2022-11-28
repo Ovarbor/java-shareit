@@ -18,53 +18,68 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     public UserDto createUser(UserDto userDto) {
-        User user = new User();
-        UserMapper.toUser(user, userDto);
+        User user = userMapper.toUser(userDto);
         emailValidator(user);
         User newUser = userRepository.createUser(user);
         log.info("User created" + newUser);
-        return UserMapper.toUserDto(newUser);
+        return userMapper.toUserDto(newUser);
     }
 
-    public UserDto updateUser(Long id, UserDto userDto) {
-        User updatedUser;
-        userValidator(userRepository.getUser(id));
-        User user = new User(userRepository.getUser(id));
-        UserMapper.toUser(user, userDto);
-        user.setId(id);
-        emailValidator(user);
-        updatedUser = userRepository.updateUser(user);
-        log.info("User updated" + updatedUser);
-        return UserMapper.toUserDto(updatedUser);
+    public UserDto updateUser(long id, UserDto userDto) {
+        User oldUser = userRepository.getUser(id);
+        userIdValidator(oldUser);
+        User user = userMapper.toUser(userDto);
+        userNameAndEmailValidator(oldUser, user);
+        User changedUser = userRepository.updateUser(oldUser);
+        log.info("user with id = {} is changed {}.", changedUser.getId(), changedUser);
+        return userMapper.toUserDto(changedUser);
     }
+
 
     public List<UserDto> getAllUsers() {
         return userRepository.getAllUsers()
                 .stream()
-                .map(UserMapper::toUserDto)
+                .map(userMapper::toUserDto)
                 .collect(Collectors.toList());
     }
 
     public UserDto getUser(Long id) {
-        userValidator(userRepository.getUser(id));
-        return UserMapper.toUserDto(userRepository.getUser(id));
+        userIdValidator(userRepository.getUser(id));
+        return userMapper.toUserDto(userRepository.getUser(id));
     }
 
     public void removeUser(Long id) {
-        userValidator(userRepository.getUser(id));
+        userIdValidator(userRepository.getUser(id));
         userRepository.removeUser(id);
     }
 
-    protected void userValidator(User user) {
+    private void userIdValidator(User user) {
         if (!userRepository.getAllUsers().contains(userRepository.getUser(user.getId()))) {
             throw new NotFoundValidationException("User with id " + userRepository.getUser(user.getId()) + "not found");
+        }
+        if (user.getName().isBlank()) {
+            throw new ConflictException("Name cant be blank");
+        }
+        if (user.getEmail().isBlank()) {
+            throw new ConflictException("Description cant be blank");
+        }
+    }
+
+    private void userNameAndEmailValidator(User oldUser, User user) {
+        if (user.getEmail() != null) {
+            emailValidator(user);
+            oldUser.setEmail(user.getEmail());
+        }
+        if (user.getName() != null) {
+            oldUser.setName(user.getName());
         }
     }
 
     private void emailValidator(User user) {
-            if (emailCheck(user)) {
+        if (emailCheck(user)) {
                 throw new ConflictException("This email is already in use");
             }
     }

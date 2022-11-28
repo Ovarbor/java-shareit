@@ -1,5 +1,7 @@
 package ru.practicum.shareit.user.controller;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.service.UserService;
@@ -13,30 +15,33 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping()
-    public List<UserDto> findAll() {
-        return userService.getAllUsers();
-    }
-
     @PostMapping()
-    public UserDto createUser(@Valid @RequestBody UserDto userDto) {
-        return userService.createUser(userDto);
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
+        UserDto userCreated = userService.createUser(userDto);
+        return ResponseEntity.status(201).body(userCreated);
     }
 
-
-    @PatchMapping("/{id}")
-    public UserDto updateUser(@Valid @PathVariable Long id, @RequestBody UserDto userDto) {
-        return userService.updateUser(id, userDto);
-    }
-
-
-    @GetMapping("/{id}")
-    public UserDto getUser(@PathVariable Long id) {
-        return userService.getUser(id);
+    @PatchMapping("/{userId}")
+    public ResponseEntity<UserDto> updateUser(@Valid @PathVariable Long userId, @RequestBody UserDto userDto) {
+        UserDto userUpdated = userService.updateUser(userId, userDto);
+        return ResponseEntity.ok().body(userUpdated);
     }
 
     @DeleteMapping("/{userId}")
-    public void removeUser(@PathVariable Long userId) {
+    public ResponseEntity<Void> removeUser(@PathVariable Long userId) {
         userService.removeUser(userId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserDto> getUser(@PathVariable Long userId) {
+        UserDto user = userService.getUser(userId);
+        return ResponseEntity.ok().body(user);
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<UserDto>> findAll() {
+        List<UserDto> users = userService.getAllUsers();
+        return ResponseEntity.ok().body(users);
     }
 }
