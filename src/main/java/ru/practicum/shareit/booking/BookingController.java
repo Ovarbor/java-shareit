@@ -1,5 +1,4 @@
 package ru.practicum.shareit.booking;
-<<<<<<< HEAD
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,14 +9,6 @@ import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
-=======
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-/**
- * TODO Sprint add-bookings.
- */
->>>>>>> 4f16f1bf88eed9c7fa247ad0c502c2e149be4d77
 @RestController
 @RequestMapping(path = "/bookings")
 @RequiredArgsConstructor

@@ -1,9 +1,9 @@
 package ru.practicum.shareit.user.model;
-<<<<<<< HEAD
 import lombok.*;
 import org.hibernate.Hibernate;
 import javax.persistence.*;
 import java.util.Objects;
+
 @Getter
 @Setter
 @ToString
@@ -19,19 +19,6 @@ public class User {
     @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "email", unique = true, nullable = false)
-=======
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class User {
-
-    private Long id;
-    private String name;
->>>>>>> 4f16f1bf88eed9c7fa247ad0c502c2e149be4d77
     private String email;
 
     public User(User newUser) {
@@ -39,7 +26,6 @@ public class User {
         this.setName(newUser.getName());
         this.setEmail(newUser.getEmail());
     }
-<<<<<<< HEAD
 
     @Override
     public boolean equals(Object o) {
@@ -53,6 +39,4 @@ public class User {
     public int hashCode() {
         return getClass().hashCode();
     }
-=======
->>>>>>> 4f16f1bf88eed9c7fa247ad0c502c2e149be4d77
 }
