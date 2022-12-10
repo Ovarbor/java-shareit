@@ -1,4 +1,5 @@
 package ru.practicum.shareit.item.model;
+<<<<<<< HEAD
 import lombok.*;
 import org.hibernate.Hibernate;
 import ru.practicum.shareit.user.model.User;
@@ -28,6 +29,30 @@ public class Item {
    private User owner;
    @Column(name = "request_id")
    private Long requestId;
+=======
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import ru.practicum.shareit.request.ItemRequest;
+import ru.practicum.shareit.user.model.User;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Item {
+
+   private Long id;
+   @NotBlank
+   private String name;
+   @NotBlank
+   private String description;
+   @NotNull
+   private Boolean available;
+   private User owner;
+   private ItemRequest request;
+>>>>>>> 4f16f1bf88eed9c7fa247ad0c502c2e149be4d77
 
    public Item(Item newItem) {
       this.setId(newItem.getId());
@@ -35,6 +60,7 @@ public class Item {
       this.setDescription(newItem.getDescription());
       this.setAvailable(newItem.getAvailable());
       this.setOwner(newItem.getOwner());
+<<<<<<< HEAD
       this.setRequestId(newItem.getRequestId());
    }
 
@@ -49,5 +75,8 @@ public class Item {
    @Override
    public int hashCode() {
       return getClass().hashCode();
+=======
+      this.setRequest(newItem.getRequest());
+>>>>>>> 4f16f1bf88eed9c7fa247ad0c502c2e149be4d77
    }
 }

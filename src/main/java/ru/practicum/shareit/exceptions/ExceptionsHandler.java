@@ -6,7 +6,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+<<<<<<< HEAD
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+=======
+>>>>>>> 4f16f1bf88eed9c7fa247ad0c502c2e149be4d77
 
 @Slf4j
 @RestControllerAdvice
@@ -39,7 +42,11 @@ public class ExceptionsHandler {
     @Getter
     @RequiredArgsConstructor
     static class ErrorMessage {
+<<<<<<< HEAD
         private final String error;
+=======
+        private final String message;
+>>>>>>> 4f16f1bf88eed9c7fa247ad0c502c2e149be4d77
     }
 }
 
