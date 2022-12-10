@@ -43,7 +43,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserDto getUser(Long id) {
         Optional<User> user = userRepository.findById(id);
-        if(user.isPresent()) {
+        if (user.isPresent()) {
             return userMapper.toUserDto(user.get());
         } else {
             throw new NotFoundValidationException("User with id: " + id + "not found");

@@ -37,7 +37,7 @@ public class ItemService {
     @Transactional
     public ItemDto createItem(ItemDto itemDto, Long userId) {
         Optional<User> owner = userRepository.findById(userId);
-        if(owner.isEmpty()) throw new NotFoundValidationException("Owner with id: " + userId + " not found");
+        if (owner.isEmpty()) throw new NotFoundValidationException("Owner with id: " + userId + " not found");
         Item newItem = itemMapper.toItem(itemDto);
         newItem.setOwner(owner.get());
         log.info("Item created" + newItem);
