@@ -36,22 +36,22 @@ public class ItemService {
 
     @Transactional
     public ItemDto createItem(ItemDto itemDto, Long userId) {
-        Optional<User> owner = Optional.of(userRepository.findById(userId).orElseThrow(() ->
-                new NotFoundValidationException("Owner with id: " + userId + " not found")));
+        User owner = userRepository.findById(userId).orElseThrow(() ->
+                new NotFoundValidationException("Owner with id: " + userId + " not found"));
         Item newItem = itemMapper.toItem(itemDto);
-        newItem.setOwner(owner.get());
+        newItem.setOwner(owner);
         log.info("Item created" + newItem);
         return itemMapper.toItemDto(itemRepository.save(newItem));
     }
 
     @Transactional
     public ItemDto updateItem(ItemDto itemDto, Long itemId, Long userId) {
-        Optional<Item> oldItem = Optional.of(itemRepository.findById(itemId).orElseThrow(() ->
-                new NotFoundValidationException("Item with id: " + itemId + " not found")));
-        if (!Objects.equals(oldItem.get().getOwner().getId(), userId))
+        Item oldItem = itemRepository.findById(itemId).orElseThrow(() ->
+                new NotFoundValidationException("Item with id: " + itemId + " not found"));
+        if (!Objects.equals(oldItem.getOwner().getId(), userId))
             throw new NotFoundValidationException("User not owner");
         Item item  = itemMapper.toItem(itemDto);
-        Item itemNew  = itemOwnerNameDescAvailValidator(item, oldItem.get());
+        Item itemNew  = itemOwnerNameDescAvailValidator(item, oldItem);
         log.info("Item updated" + itemNew);
         return itemMapper.toItemDto(itemNew);
     }
@@ -73,11 +73,11 @@ public class ItemService {
     @Transactional(readOnly = true)
     public ItemDto getItem(Long id, Long requesterId) {
         ItemDto itemDto;
-        Optional<Item> item = Optional.of(itemRepository.findById(id).orElseThrow(() ->
-                new NotFoundValidationException("Item with id: " + id + " not found")));
-        itemDto = itemMapper.toItemDto(item.get());
+        Item item = itemRepository.findById(id).orElseThrow(() ->
+                new NotFoundValidationException("Item with id: " + id + " not found"));
+        itemDto = itemMapper.toItemDto(item);
         addComment(itemDto);
-        if (!item.get().getOwner().getId().equals(requesterId)) {
+        if (!item.getOwner().getId().equals(requesterId)) {
             return itemDto;
         }
         return addBooking(itemDto);
@@ -104,16 +104,16 @@ public class ItemService {
 
     @Transactional
     public CommentDto createComment(Long itemId, CommentDto commentDto, Long authorId) {
-        Optional<User> author = Optional.of(userRepository.findById(authorId).orElseThrow(() ->
-                new NotFoundValidationException("Author not found.")));
-        Optional<Item> item = Optional.of(itemRepository.findById(itemId).orElseThrow(() ->
-                new NotFoundValidationException("Item not found.")));
+        User author = userRepository.findById(authorId).orElseThrow(() ->
+                new NotFoundValidationException("Author not found."));
+        Item item = itemRepository.findById(itemId).orElseThrow(() ->
+                new NotFoundValidationException("Item not found."));
         commentDto.setItemId(itemId);
         createCommentValidator(commentDto, authorId);
-        commentDto.setAuthorName(author.get().getName());
+        commentDto.setAuthorName(author.getName());
         Comment comment = commentMapper.toComment(commentDto);
-        comment.setAuthor(author.get());
-        comment.setItem(item.get());
+        comment.setAuthor(author);
+        comment.setItem(item);
         comment.setCreated(LocalDateTime.now());
         return commentMapper.toCommentDto(commentRepository.save(comment));
     }

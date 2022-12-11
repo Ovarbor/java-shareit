@@ -7,7 +7,6 @@ import ru.practicum.shareit.exceptions.NotFoundValidationException;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.model.User;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -25,9 +24,9 @@ public class UserService {
 
     @Transactional
     public UserDto updateUser(Long id, UserDto userDto) {
-        Optional<User> oldUser = Optional.of(userRepository.findById(id).orElseThrow(() ->
-                new NotFoundValidationException("User with id: " + userDto.getId() + " not found.")));
-        User updatedUser = userNameAndEmailUpdate(oldUser.get(), userDto);
+        User oldUser = userRepository.findById(id).orElseThrow(() ->
+                new NotFoundValidationException("User with id: " + userDto.getId() + " not found."));
+        User updatedUser = userNameAndEmailUpdate(oldUser, userDto);
         log.info("User with id: " + userDto.getId() + " updated");
         return userMapper.toUserDto(updatedUser);
     }
@@ -39,9 +38,9 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserDto getUser(Long id) {
-        Optional<User> user = Optional.of(userRepository.findById(id).orElseThrow(() ->
-                new NotFoundValidationException("User with id: " + id + "not found")));
-        return userMapper.toUserDto(user.get());
+        User user = userRepository.findById(id).orElseThrow(() ->
+                new NotFoundValidationException("User with id: " + id + "not found"));
+        return userMapper.toUserDto(user);
     }
 
     @Transactional

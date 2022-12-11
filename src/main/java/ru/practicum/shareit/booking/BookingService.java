@@ -20,7 +20,6 @@ import ru.practicum.shareit.user.UserRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -35,19 +34,19 @@ public class BookingService {
 
     @Transactional
     public BookingDto create(BookingRequest request, Long requesterId) {
-        Optional<Item> item = Optional.of(itemRepository.findById(request.getItemId()).orElseThrow(() ->
-                new NotFoundValidationException("Item not found.")));
-        if (item.get().getOwner().getId().equals(requesterId))
+        Item item = itemRepository.findById(request.getItemId()).orElseThrow(() ->
+                new NotFoundValidationException("The item is not available for booking by owner."));
+        if (item.getOwner().getId().equals(requesterId))
             throw new NotFoundValidationException("Booking your item? Why?");
-        if (item.get().getAvailable().equals(Boolean.FALSE))
+        if (item.getAvailable().equals(Boolean.FALSE))
             throw new IllegalRequestException("This item not available.");
         if (!request.getStart().isBefore(request.getEnd()))
             throw new IllegalRequestException("Booking start is after the end.");
         Booking booking = bookingMapper.toBookingFromRequest(request);
-        booking.setItem(item.get());
-        Optional<User> requester = Optional.of(userRepository.findById(requesterId).orElseThrow(() ->
-                new NotFoundValidationException("Requester with id: " + requesterId + " not found.")));
-        booking.setBooker(requester.get());
+        booking.setItem(item);
+        User requester = userRepository.findById(requesterId).orElseThrow(() ->
+                new NotFoundValidationException("Requester with id: " + requesterId + " not found."));
+        booking.setBooker(requester);
         booking.setStatus(Status.WAITING);
         log.info("Booking created: {}", booking);
         return bookingMapper.toBookingDto(bookingRepository.save(booking));
@@ -55,31 +54,32 @@ public class BookingService {
 
     @Transactional
     public BookingDto changeStatusByOwner(Long bookingId, Boolean approved, Long ownerId) {
-        Optional<Booking> booking = Optional.of(bookingRepository.findById(bookingId).orElseThrow(() ->
-                new NotFoundValidationException("Booking with id: " + bookingId + " not found.")));
-        User owner = booking.get().getItem().getOwner();
-        if (!owner.getId().equals(ownerId)) throw new NotFoundValidationException("This is not user's item.");
-        if (booking.get().getStatus().equals(Status.APPROVED))
+        Booking booking = bookingRepository.findById(bookingId).orElseThrow(() ->
+                new NotFoundValidationException("Booking with id: " + bookingId + " not found."));
+        User owner = booking.getItem().getOwner();
+        if (!owner.getId().equals(ownerId))
+            throw new NotFoundValidationException("This is not user's item.");
+        if (booking.getStatus().equals(Status.APPROVED))
             throw new IllegalRequestException("Booking already approved");
         if (approved.equals(Boolean.TRUE)) {
             log.info("Approve booking id:{}", bookingId);
-            booking.get().setStatus(Status.APPROVED);
+            booking.setStatus(Status.APPROVED);
         } else {
             log.info("Reject booking id:{}", bookingId);
-            booking.get().setStatus(Status.REJECTED);
+            booking.setStatus(Status.REJECTED);
         }
-        return bookingMapper.toBookingDto(booking.get());
+        return bookingMapper.toBookingDto(booking);
     }
 
     @Transactional(readOnly = true)
     public BookingDto getById(Long bookingId, Long userId) {
-        Optional<Booking> booking = Optional.of(bookingRepository.findById(bookingId).orElseThrow(() ->
-                new NotFoundValidationException("Booking with id: " + bookingId + " not found.")));
-        if (!booking.get().getBooker().getId().equals(userId)
-                && !booking.get().getItem().getOwner().getId().equals(userId)) {
+        Booking booking = bookingRepository.findById(bookingId).orElseThrow(() ->
+                new NotFoundValidationException("Booking with id: " + bookingId + " not found."));
+        if (!booking.getBooker().getId().equals(userId)
+                && !booking.getItem().getOwner().getId().equals(userId)) {
             throw new NotFoundValidationException("This is not user's booking or item.");
         }
-        return bookingMapper.toBookingDto(booking.get());
+        return bookingMapper.toBookingDto(booking);
     }
 
     @Transactional(readOnly = true)
