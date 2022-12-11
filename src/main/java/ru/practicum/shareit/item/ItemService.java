@@ -74,7 +74,7 @@ public class ItemService {
     public ItemDto getItem(Long id, Long requesterId) {
         ItemDto itemDto;
         Optional<Item> item = Optional.of(itemRepository.findById(id).orElseThrow(() ->
-                new NotFoundValidationException("Item with id: " + id + " not found"))) ;
+                new NotFoundValidationException("Item with id: " + id + " not found")));
         itemDto = itemMapper.toItemDto(item.get());
         addComment(itemDto);
         if (!item.get().getOwner().getId().equals(requesterId)) {
