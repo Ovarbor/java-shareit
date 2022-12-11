@@ -21,15 +21,13 @@ public class ItemController {
     @PostMapping()
     public ResponseEntity<ItemDto> createItem(@Valid @RequestBody ItemDto itemDto,
                                               @RequestHeader("X-Sharer-User-Id") Long userId) {
-        ItemDto itemCreated = itemService.createItem(itemDto, userId);
-        return ResponseEntity.status(201).body(itemCreated);
+        return ResponseEntity.status(201).body(itemService.createItem(itemDto, userId));
     }
 
     @PatchMapping("/{itemId}")
     public ResponseEntity<ItemDto> updateItem(@RequestBody ItemDto itemDto, @PathVariable Long itemId,
                               @RequestHeader("X-Sharer-User-Id") Long userId) {
-        ItemDto itemUpdated = itemService.updateItem(itemDto, itemId, userId);
-        return ResponseEntity.ok().body(itemUpdated);
+        return ResponseEntity.ok().body(itemService.updateItem(itemDto, itemId, userId));
     }
 
     @GetMapping("/search")
@@ -37,8 +35,7 @@ public class ItemController {
     public ResponseEntity<List<ItemDto>> search(@RequestParam("text") String text,
                                 @RequestParam(value = "from", defaultValue = "0") @PositiveOrZero Integer from,
                                 @RequestParam(value = "size", defaultValue = "20") @Positive Integer size) {
-        List<ItemDto> searchItems = itemService.search(text, from, size);
-        return ResponseEntity.ok().body(searchItems);
+        return ResponseEntity.ok().body(itemService.search(text, from, size));
     }
 
     @DeleteMapping("/{itemId}")
@@ -50,14 +47,12 @@ public class ItemController {
     @GetMapping("/{itemId}")
     public ResponseEntity<ItemDto> getItem(@PathVariable Long itemId,
                                            @RequestHeader("X-Sharer-User-Id") Long requesterId) {
-        ItemDto item = itemService.getItem(itemId, requesterId);
-        return ResponseEntity.ok().body(item);
+        return ResponseEntity.ok().body(itemService.getItem(itemId, requesterId));
     }
 
     @GetMapping()
     public ResponseEntity<List<ItemDto>> findAll(@RequestHeader("X-Sharer-User-Id") Long userId) {
-        List<ItemDto> items = itemService.getAllItemsByUserId(userId);
-        return ResponseEntity.ok().body(items);
+        return ResponseEntity.ok().body(itemService.getAllItemsByUserId(userId));
     }
 
     @PostMapping("/{itemId}/comment")
@@ -65,7 +60,6 @@ public class ItemController {
     public ResponseEntity<CommentDto> createComment(@PathVariable Long itemId,
                                     @RequestBody @Valid CommentDto commentDto,
                                     @RequestHeader("X-Sharer-User-Id") Long authorId) {
-        CommentDto comment = itemService.createComment(itemId, commentDto, authorId);
-        return ResponseEntity.ok().body(comment);
+        return ResponseEntity.ok().body(itemService.createComment(itemId, commentDto, authorId));
     }
 }

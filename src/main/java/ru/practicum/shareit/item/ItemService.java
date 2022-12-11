@@ -36,8 +36,8 @@ public class ItemService {
 
     @Transactional
     public ItemDto createItem(ItemDto itemDto, Long userId) {
-        Optional<User> owner = userRepository.findById(userId);
-        if (owner.isEmpty()) throw new NotFoundValidationException("Owner with id: " + userId + " not found");
+        Optional<User> owner = Optional.of(userRepository.findById(userId).orElseThrow(() ->
+                new NotFoundValidationException("Owner with id: " + userId + " not found")));
         Item newItem = itemMapper.toItem(itemDto);
         newItem.setOwner(owner.get());
         log.info("Item created" + newItem);
@@ -46,8 +46,8 @@ public class ItemService {
 
     @Transactional
     public ItemDto updateItem(ItemDto itemDto, Long itemId, Long userId) {
-        Optional<Item> oldItem = itemRepository.findById(itemId);
-        if (oldItem.isEmpty()) throw new NotFoundValidationException("Item with id: " + itemId + " not found");
+        Optional<Item> oldItem = Optional.of(itemRepository.findById(itemId).orElseThrow(() ->
+                new NotFoundValidationException("Item with id: " + itemId + " not found")));
         if (!Objects.equals(oldItem.get().getOwner().getId(), userId))
             throw new NotFoundValidationException("User not owner");
         Item item  = itemMapper.toItem(itemDto);
@@ -73,15 +73,12 @@ public class ItemService {
     @Transactional(readOnly = true)
     public ItemDto getItem(Long id, Long requesterId) {
         ItemDto itemDto;
-        Optional<Item> item  = itemRepository.findById(id);
-        if (item.isPresent()) {
-            itemDto = itemMapper.toItemDto(item.get());
-            addComment(itemDto);
-            if (!item.get().getOwner().getId().equals(requesterId)) {
-                return itemDto;
-            }
-        } else {
-            throw new NotFoundValidationException("Item with id: " + id + " not found");
+        Optional<Item> item = Optional.of(itemRepository.findById(id).orElseThrow(() ->
+                new NotFoundValidationException("Item with id: " + id + " not found"))) ;
+        itemDto = itemMapper.toItemDto(item.get());
+        addComment(itemDto);
+        if (!item.get().getOwner().getId().equals(requesterId)) {
+            return itemDto;
         }
         return addBooking(itemDto);
     }
@@ -99,21 +96,19 @@ public class ItemService {
 
     @Transactional
     public void removeItem(Long id) {
-        Optional<Item> item = itemRepository.findById(id);
-        if (item.isPresent()) {
-            itemRepository.deleteById(id);
-        } else {
-            throw new NotFoundValidationException("User with id: " + id + "not found");
-        }
+       itemRepository
+               .findById(id)
+               .orElseThrow(() -> new NotFoundValidationException("User with id: " + id + "not found"));
+       itemRepository.deleteById(id);
     }
 
     @Transactional
     public CommentDto createComment(Long itemId, CommentDto commentDto, Long authorId) {
-        Optional<User> author = userRepository.findById(authorId);
-        Optional<Item> item = itemRepository.findById(itemId);
+        Optional<User> author = Optional.of(userRepository.findById(authorId).orElseThrow(() ->
+                new NotFoundValidationException("Author not found.")));
+        Optional<Item> item = Optional.of(itemRepository.findById(itemId).orElseThrow(() ->
+                new NotFoundValidationException("Item not found.")));
         commentDto.setItemId(itemId);
-        if (author.isEmpty()) throw new NotFoundValidationException("Author not found.");
-        if (item.isEmpty()) throw new NotFoundValidationException("Item not found.");
         createCommentValidator(commentDto, authorId);
         commentDto.setAuthorName(author.get().getName());
         Comment comment = commentMapper.toComment(commentDto);
@@ -144,10 +139,10 @@ public class ItemService {
 
     private ItemDto addBooking(ItemDto item) {
         LocalDateTime moment = LocalDateTime.now();
-        item.setLastBooking(bookingMapper.toDtoShort(bookingRepository.findByItemIdAndEndIsBefore(item.getId(),
-                moment)));
-        item.setNextBooking(bookingMapper.toDtoShort(bookingRepository.findByItemIdAndStartIsAfter(item.getId(),
-                moment)));
+        Optional<Booking> bookingBefore = bookingRepository.findByItemIdAndEndIsBefore(item.getId(), moment);
+        Optional<Booking> bookingAfter = bookingRepository.findByItemIdAndStartIsAfter(item.getId(), moment);
+        bookingBefore.ifPresent(booking -> item.setLastBooking(bookingMapper.toDtoShort(booking)));
+        bookingAfter.ifPresent(booking -> item.setNextBooking(bookingMapper.toDtoShort(booking)));
         return item;
     }
 

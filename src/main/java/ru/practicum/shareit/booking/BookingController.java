@@ -19,23 +19,20 @@ public class BookingController {
     @PostMapping
     public ResponseEntity<BookingDto> create(@RequestBody @Valid BookingRequest request,
                              @RequestHeader("X-Sharer-User-Id") Long requesterId) {
-        BookingDto bookingCreated = bookingService.create(request, requesterId);
-        return ResponseEntity.status(201).body(bookingCreated);
+        return ResponseEntity.status(201).body(bookingService.create(request, requesterId));
     }
 
     @PatchMapping("/{bookingId}")
     public ResponseEntity<BookingDto> setStatusByOwner(@PathVariable Long bookingId,
                                        @RequestParam("approved") Boolean approved,
                                        @RequestHeader("X-Sharer-User-Id") Long ownerId) {
-        BookingDto updatedBooking = bookingService.changeStatusByOwner(bookingId, approved, ownerId);
-        return ResponseEntity.ok().body(updatedBooking);
+        return ResponseEntity.ok().body(bookingService.changeStatusByOwner(bookingId, approved, ownerId));
     }
 
     @GetMapping("/{bookingId}")
     public ResponseEntity<BookingDto> getById(@PathVariable Long bookingId,
                               @RequestHeader("X-Sharer-User-Id") Long userId) {
-        BookingDto booking = bookingService.getById(bookingId, userId);
-        return ResponseEntity.ok().body(booking);
+        return ResponseEntity.ok().body(bookingService.getById(bookingId, userId));
     }
 
     @GetMapping
@@ -43,8 +40,7 @@ public class BookingController {
                                    @RequestHeader("X-Sharer-User-Id") Long userId,
                                    @RequestParam(value = "from", defaultValue = "0") @PositiveOrZero Integer from,
                                    @RequestParam(value = "size", defaultValue = "20") @Positive Integer size) {
-        List<BookingDto> bookings = bookingService.getAllByUser(state, userId, from, size);
-        return ResponseEntity.ok().body(bookings);
+        return ResponseEntity.ok().body(bookingService.getAllByUser(state, userId, from, size));
     }
 
     @GetMapping("/owner")
@@ -53,7 +49,6 @@ public class BookingController {
             @RequestHeader("X-Sharer-User-Id") Long userId,
             @RequestParam(value = "from", defaultValue = "0") @PositiveOrZero Integer from,
             @RequestParam(value = "size", defaultValue = "20") @Positive Integer size) {
-        List<BookingDto> ownerBookings = bookingService.getAllByUserOwner(state, userId, from, size);
-        return ResponseEntity.ok().body(ownerBookings);
+        return ResponseEntity.ok().body(bookingService.getAllByUserOwner(state, userId, from, size));
     }
 }

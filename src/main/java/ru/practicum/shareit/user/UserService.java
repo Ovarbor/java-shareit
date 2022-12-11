@@ -25,14 +25,11 @@ public class UserService {
 
     @Transactional
     public UserDto updateUser(Long id, UserDto userDto) {
-        Optional<User> oldUser = userRepository.findById(id);
-        if (oldUser.isPresent()) {
-            User updatedUser = userNameAndEmailUpdate(oldUser.get(), userDto);
-            log.info("User with id: " + userDto.getId() + " updated");
-            return userMapper.toUserDto(updatedUser);
-        } else {
-            throw new NotFoundValidationException("User with id: " + userDto.getId() + " not found.");
-        }
+        Optional<User> oldUser = Optional.of(userRepository.findById(id).orElseThrow(() ->
+                new NotFoundValidationException("User with id: " + userDto.getId() + " not found.")));
+        User updatedUser = userNameAndEmailUpdate(oldUser.get(), userDto);
+        log.info("User with id: " + userDto.getId() + " updated");
+        return userMapper.toUserDto(updatedUser);
     }
 
     @Transactional(readOnly = true)
@@ -42,22 +39,17 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserDto getUser(Long id) {
-        Optional<User> user = userRepository.findById(id);
-        if (user.isPresent()) {
-            return userMapper.toUserDto(user.get());
-        } else {
-            throw new NotFoundValidationException("User with id: " + id + "not found");
-        }
+        Optional<User> user = Optional.of(userRepository.findById(id).orElseThrow(() ->
+                new NotFoundValidationException("User with id: " + id + "not found")));
+        return userMapper.toUserDto(user.get());
     }
 
     @Transactional
     public void removeUser(Long id) {
-        Optional<User> user = userRepository.findById(id);
-        if (user.isPresent()) {
-            userRepository.deleteById(id);
-        } else {
-            throw new NotFoundValidationException("User with id: " + id + "not found");
-        }
+        userRepository
+                .findById(id)
+                .orElseThrow(() -> new NotFoundValidationException("User with id: " + id + "not found"));
+        userRepository.deleteById(id);
     }
 
     private User userNameAndEmailUpdate(User oldUser, UserDto user) {

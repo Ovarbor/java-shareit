@@ -18,6 +18,7 @@ import ru.practicum.shareit.item.ItemRepository;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.UserRepository;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,8 +35,8 @@ public class BookingService {
 
     @Transactional
     public BookingDto create(BookingRequest request, Long requesterId) {
-        Optional<Item> item = itemRepository.findById(request.getItemId());
-        if (item.isEmpty()) throw new NotFoundValidationException("Item not found.");
+        Optional<Item> item = Optional.of(itemRepository.findById(request.getItemId()).orElseThrow(() ->
+                new NotFoundValidationException("Item not found.")));
         if (item.get().getOwner().getId().equals(requesterId))
             throw new NotFoundValidationException("Booking your item? Why?");
         if (item.get().getAvailable().equals(Boolean.FALSE))
@@ -44,8 +45,8 @@ public class BookingService {
             throw new IllegalRequestException("Booking start is after the end.");
         Booking booking = bookingMapper.toBookingFromRequest(request);
         booking.setItem(item.get());
-        Optional<User> requester = userRepository.findById(requesterId);
-        if (requester.isEmpty()) throw new NotFoundValidationException("Requester not found by ID.");
+        Optional<User> requester = Optional.of(userRepository.findById(requesterId).orElseThrow(() ->
+                new NotFoundValidationException("Requester with id: " + requesterId + " not found.")));
         booking.setBooker(requester.get());
         booking.setStatus(Status.WAITING);
         log.info("Booking created: {}", booking);
@@ -54,8 +55,8 @@ public class BookingService {
 
     @Transactional
     public BookingDto changeStatusByOwner(Long bookingId, Boolean approved, Long ownerId) {
-        Optional<Booking> booking = bookingRepository.findById(bookingId);
-        if (booking.isEmpty()) throw new NotFoundValidationException("Booking with id: " + bookingId + " not found.");
+        Optional<Booking> booking = Optional.of(bookingRepository.findById(bookingId).orElseThrow(() ->
+                new NotFoundValidationException("Booking with id: " + bookingId + " not found.")));
         User owner = booking.get().getItem().getOwner();
         if (!owner.getId().equals(ownerId)) throw new NotFoundValidationException("This is not user's item.");
         if (booking.get().getStatus().equals(Status.APPROVED))
@@ -72,9 +73,8 @@ public class BookingService {
 
     @Transactional(readOnly = true)
     public BookingDto getById(Long bookingId, Long userId) {
-        Optional<Booking> booking = bookingRepository.findById(bookingId);
-        if (booking.isEmpty()) throw new NotFoundValidationException("Booking with id: " + bookingId + " not found.");
-
+        Optional<Booking> booking = Optional.of(bookingRepository.findById(bookingId).orElseThrow(() ->
+                new NotFoundValidationException("Booking with id: " + bookingId + " not found.")));
         if (!booking.get().getBooker().getId().equals(userId)
                 && !booking.get().getItem().getOwner().getId().equals(userId)) {
             throw new NotFoundValidationException("This is not user's booking or item.");
@@ -90,23 +90,52 @@ public class BookingService {
         Pageable page = PageRequest.of(from / size, size, Sort.by("start").descending());
         switch (requestStatus) {
             case ALL:
-                return bookingMapper.toBookingDtoList(bookingRepository.findByBookerId(userId, page));
+                if (bookingRepository.findByBookerId(userId, page).isEmpty()) {
+                    return new ArrayList<>();
+                } else {
+                    return bookingMapper.toBookingDtoList(bookingRepository.findByBookerId(userId, page));
+                }
             case CURRENT:
                 LocalDateTime moment = LocalDateTime.now();
-                return bookingMapper.toBookingDtoList(bookingRepository.findByBookerIdAndStartIsBeforeAndEndIsAfter(userId,
-                        moment, moment, page));
+                if (bookingRepository.findByBookerIdAndStartIsBeforeAndEndIsAfter(userId,
+                        moment, moment, page).isEmpty()) {
+                    return new ArrayList<>();
+                } else {
+                    return bookingMapper.toBookingDtoList(bookingRepository.findByBookerIdAndStartIsBeforeAndEndIsAfter(userId,
+                            moment, moment, page));
+                }
             case PAST:
-                return bookingMapper.toBookingDtoList(bookingRepository.findByBookerIdAndEndIsBefore(
-                        userId, LocalDateTime.now(), page));
+                if  (bookingRepository.findByBookerIdAndEndIsBefore(
+                        userId, LocalDateTime.now(), page).isEmpty()) {
+                    return new ArrayList<>();
+                } else {
+                    return bookingMapper.toBookingDtoList(bookingRepository.findByBookerIdAndEndIsBefore(
+                            userId, LocalDateTime.now(), page));
+                }
             case FUTURE:
-                return bookingMapper.toBookingDtoList(bookingRepository.findByBookerIdAndStartIsAfter(
-                        userId, LocalDateTime.now(), page));
+                if (bookingRepository.findByBookerIdAndStartIsAfter(
+                        userId, LocalDateTime.now(), page).isEmpty()) {
+                    return new ArrayList<>();
+                } else {
+                    return bookingMapper.toBookingDtoList(bookingRepository.findByBookerIdAndStartIsAfter(
+                            userId, LocalDateTime.now(), page));
+                }
             case WAITING:
-                return bookingMapper.toBookingDtoList(bookingRepository.findByBookerIdAndStatusEquals(userId,
-                        Status.WAITING, page));
+                if (bookingRepository.findByBookerIdAndStatusEquals(userId,
+                        Status.WAITING, page).isEmpty()) {
+                    return new ArrayList<>();
+                } else {
+                    return bookingMapper.toBookingDtoList(bookingRepository.findByBookerIdAndStatusEquals(userId,
+                            Status.WAITING, page));
+                }
             case REJECTED:
-                return bookingMapper.toBookingDtoList(bookingRepository.findByBookerIdAndStatusEquals(userId,
-                        Status.REJECTED, page));
+                if (bookingRepository.findByBookerIdAndStatusEquals(userId,
+                        Status.REJECTED, page).isEmpty()) {
+                    return new ArrayList<>();
+                } else {
+                    return bookingMapper.toBookingDtoList(bookingRepository.findByBookerIdAndStatusEquals(userId,
+                            Status.REJECTED, page));
+                }
             default:
                 throw new IllegalRequestException("Status is wrong");
         }
@@ -114,8 +143,9 @@ public class BookingService {
 
     @Transactional(readOnly = true)
     public List<BookingDto> getAllByUserOwner(String state, Long userId, Integer from, Integer size) {
-        if (userRepository.findById(userId).isEmpty())
-            throw new NotFoundValidationException("Requester with id: " + userId + " not found");
+        userRepository
+                .findById(userId)
+                .orElseThrow(() -> new NotFoundValidationException("Requester with id: " + userId + " not found"));
         RequestStatus requestStatus = RequestStatus.parseState(state);
         List<Item> userItems = itemRepository.findByOwnerId(userId);
         List<Long> userItemsIds = userItems.stream().map(Item::getId).collect(Collectors.toList());
