@@ -16,16 +16,10 @@ import java.time.LocalDateTime;
 public class BookingRequest {
     @Positive
     private Long itemId;
-<<<<<<< HEAD
     @FutureOrPresent
     @NotNull
     private LocalDateTime start;
     @Future
     @NotNull
-=======
-    @FutureOrPresent @NotNull
-    private LocalDateTime start;
-    @Future @NotNull
->>>>>>> bb4082fcd0f4558ce93b4e2a8023a6df1366e0fe
     private LocalDateTime end;
 }

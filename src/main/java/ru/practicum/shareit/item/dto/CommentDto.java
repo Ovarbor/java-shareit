@@ -11,10 +11,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class CommentDto {
 
-<<<<<<< HEAD
-=======
-    @NotNull
->>>>>>> bb4082fcd0f4558ce93b4e2a8023a6df1366e0fe
     private Long id;
     @NotBlank
     private String text;

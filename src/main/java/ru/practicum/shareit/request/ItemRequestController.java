@@ -1,5 +1,4 @@
 package ru.practicum.shareit.request;
-<<<<<<< HEAD
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,14 +10,6 @@ import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @Slf4j
-=======
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-/**
- * TODO Sprint add-item-requests.
- */
->>>>>>> bb4082fcd0f4558ce93b4e2a8023a6df1366e0fe
 @RestController
 @RequestMapping(path = "/requests")
 @Validated

@@ -1,7 +1,6 @@
 package ru.practicum.shareit.booking;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-<<<<<<< HEAD
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.dto.BookingDto;
@@ -17,19 +16,6 @@ import java.util.List;
 @RequestMapping(path = "/bookings")
 @RequiredArgsConstructor
 @Validated
-=======
-import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.booking.dto.BookingDto;
-import ru.practicum.shareit.booking.dto.BookingRequest;
-import javax.validation.Valid;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.PositiveOrZero;
-import java.util.List;
-
-@RestController
-@RequestMapping(path = "/bookings")
-@RequiredArgsConstructor
->>>>>>> bb4082fcd0f4558ce93b4e2a8023a6df1366e0fe
 public class BookingController {
 
     private final BookingService bookingService;
@@ -54,11 +40,7 @@ public class BookingController {
     }
 
     @GetMapping
-<<<<<<< HEAD
     public ResponseEntity<List<BookingDto>> getAll(@RequestParam(name = "state", required = false, defaultValue = "ALL") RequestStatus state,
-=======
-    public ResponseEntity<List<BookingDto>> getAll(@RequestParam(name = "state", required = false, defaultValue = "ALL") String state,
->>>>>>> bb4082fcd0f4558ce93b4e2a8023a6df1366e0fe
                                    @RequestHeader("X-Sharer-User-Id") Long userId,
                                    @RequestParam(value = "from", defaultValue = "0") @PositiveOrZero Integer from,
                                    @RequestParam(value = "size", defaultValue = "20") @Positive Integer size) {
@@ -67,19 +49,12 @@ public class BookingController {
 
     @GetMapping("/owner")
     public ResponseEntity<List<BookingDto>> getOwnerBookings(
-<<<<<<< HEAD
             @RequestParam(name = "state", required = false, defaultValue = "ALL") RequestStatus state,
-=======
-            @RequestParam(name = "state", required = false, defaultValue = "ALL") String state,
->>>>>>> bb4082fcd0f4558ce93b4e2a8023a6df1366e0fe
             @RequestHeader("X-Sharer-User-Id") Long userId,
             @RequestParam(value = "from", defaultValue = "0") @PositiveOrZero Integer from,
             @RequestParam(value = "size", defaultValue = "20") @Positive Integer size) {
         return ResponseEntity.ok().body(bookingService.getAllByUserOwner(state, userId, from, size));
     }
-<<<<<<< HEAD
 
 
-=======
->>>>>>> bb4082fcd0f4558ce93b4e2a8023a6df1366e0fe
 }
