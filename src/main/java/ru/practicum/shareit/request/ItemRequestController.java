@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
+import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
@@ -23,7 +24,7 @@ public class ItemRequestController {
     }
 
     @PostMapping
-    public ResponseEntity<ItemRequestDto> create(@RequestBody @Validated ItemRequestDto request,
+    public ResponseEntity<ItemRequestDto> create(@RequestBody @Valid ItemRequestDto request,
                                                  @RequestHeader("X-Sharer-User-Id") @Positive Long userId) {
         return ResponseEntity.ok().body(service.create(request, userId));
     }
