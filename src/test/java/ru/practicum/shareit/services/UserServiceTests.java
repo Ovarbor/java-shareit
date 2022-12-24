@@ -20,13 +20,22 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTests {
 
-    List<User> userList = new ArrayList<>();
     private final User user1 = new User(1L, "user1", "@mail1.ru");
     private final User user2 = new User(2L, "user2", "@mail2.ru");
+
+    private List<User> addUsersToList() {
+        List<User> users = new ArrayList<>();
+        users.add(user1);
+        users.add(user2);
+        return users;
+    }
 
     @Mock
     UserRepository mockUserRepo;
@@ -60,7 +69,7 @@ public class UserServiceTests {
     }
 
     @Test
-    void testPatchUserNotFound() {
+    void testUpdateUserNotFound() {
         UserDto newUser = userMapper.toUserDto(user2);
         UserDtoUpdate newUser1 = userMapper.toUserDtoUpdate(userMapper.toUser(newUser));
         Mockito.when(mockUserRepo.save(Mockito.any(User.class))).thenAnswer(i -> i.getArguments()[0]);
@@ -71,18 +80,41 @@ public class UserServiceTests {
     }
 
     @Test
+    void testUpdateUser() {
+        Mockito.when(mockUserRepo.findById(1L)).thenReturn(Optional.of(user1));
+        UserDtoUpdate newUser = new UserDtoUpdate();
+        newUser.setId(1L);
+        newUser.setName("newName");
+        newUser.setEmail(user1.getEmail());
+        UserDtoUpdate resultUser = service.updateUser(newUser.getId(), newUser);
+        assertThat(resultUser, equalTo(newUser));
+        Mockito.when(mockUserRepo.findById(2L)).thenReturn(Optional.of(user2));
+        UserDtoUpdate newUser2 = new UserDtoUpdate();
+        newUser2.setId(2L);
+        newUser2.setName("notTestUser");
+        newUser2.setEmail("test49@ya.ru");
+        UserDtoUpdate resultUser2 = service.updateUser(newUser2.getId(), newUser2);
+        assertThat(resultUser2, equalTo(newUser2));
+    }
+
+    @Test
     void testGetAllUsers() {
-        List<UserDto> expected = userMapper.toDtoList(userList);
-        Mockito.when(mockUserRepo.findAll()).thenReturn(userList);
+        List<UserDto> expected = userMapper.toDtoList(addUsersToList());
+        Mockito.when(mockUserRepo.findAll()).thenReturn(addUsersToList());
         List<UserDto> result = service.getAllUsers();
         assertThat(expected, equalTo(result));
     }
 
     @Test
-    void testGetUser() {
-        Mockito.when(mockUserRepo.findById(Mockito.anyLong())).thenReturn(Optional.of(user2));
-        assertThat(userMapper.toUserDto(user2), equalTo(service.getUser(user2.getId())));
-        System.out.println(service.getUser(user2.getId()));
+    void deleteUser() {
+        service.removeUser(user1.getId());
+        verify(mockUserRepo, Mockito.times(1)).deleteById(user1.getId());
+    }
+
+    @Test
+    void getUser() {
+        when(mockUserRepo.findById(anyLong())).thenReturn(Optional.of(user1));
+        assertEquals(userMapper.toUserDto(user1), service.getUser(user1.getId()));
     }
 
     @Test

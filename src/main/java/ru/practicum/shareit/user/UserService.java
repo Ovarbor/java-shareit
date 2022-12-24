@@ -40,15 +40,13 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserDto getUser(Long id) {
         User user = userRepository.findById(id).orElseThrow(() ->
-                new NotFoundValidationException("User with id: " + id + "not found"));
+                new NotFoundValidationException("User with id: " + id + " not found"));
         return userMapper.toUserDto(user);
     }
 
     @Transactional
     public void removeUser(Long id) {
-        userRepository
-                .findById(id)
-                .orElseThrow(() -> new NotFoundValidationException("User with id: " + id + "not found"));
+        log.info("User with id: " + id + " deleted");
         userRepository.deleteById(id);
     }
 

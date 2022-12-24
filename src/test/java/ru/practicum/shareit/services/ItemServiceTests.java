@@ -30,6 +30,7 @@ import java.util.Optional;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 public class ItemServiceTests {
@@ -195,6 +196,12 @@ public class ItemServiceTests {
         Mockito.when(mockItemRepo.search(Mockito.anyString(), Mockito.any(Pageable.class)))
                 .thenReturn(new PageImpl<>(addItemsToList()));
         assertFalse(service.search("text", 0, 20).isEmpty());
+    }
+
+    @Test
+    void deleteItem() {
+        service.removeItem(item1.getId());
+        verify(mockItemRepo, Mockito.times(1)).deleteById(item1.getId());
     }
 
     @Test

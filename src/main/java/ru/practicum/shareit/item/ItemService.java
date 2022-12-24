@@ -98,9 +98,7 @@ public class ItemService {
 
     @Transactional
     public void removeItem(Long id) {
-       itemRepository
-               .findById(id)
-               .orElseThrow(() -> new NotFoundValidationException("User with id: " + id + " not found"));
+        log.info("Item deleted " + id);
        itemRepository.deleteById(id);
     }
 

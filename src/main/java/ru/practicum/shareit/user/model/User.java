@@ -21,12 +21,6 @@ public class User {
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    public User(User newUser) {
-        this.setId(newUser.getId());
-        this.setName(newUser.getName());
-        this.setEmail(newUser.getEmail());
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
