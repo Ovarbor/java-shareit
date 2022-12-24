@@ -24,7 +24,7 @@ public class ItemRequestController {
 
     @PostMapping
     public ResponseEntity<ItemRequestDto> create(@RequestBody @Validated ItemRequestDto request,
-                                 @RequestHeader("X-Sharer-User-Id") @Positive Long userId) {
+                                                 @RequestHeader("X-Sharer-User-Id") @Positive Long userId) {
         return ResponseEntity.ok().body(service.create(request, userId));
     }
 
@@ -34,7 +34,7 @@ public class ItemRequestController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity <List<ItemRequestDto>> getAll(@RequestHeader("X-Sharer-User-Id") @Positive Long userId,
+    public ResponseEntity<List<ItemRequestDto>> getAll(@RequestHeader("X-Sharer-User-Id") @Positive Long userId,
                                        @RequestParam(value = "from", defaultValue = "0") @PositiveOrZero Integer from,
                                        @RequestParam(value = "size", defaultValue = "20") @Positive Integer size) {
         return ResponseEntity.ok().body(service.getAll(userId, from, size));

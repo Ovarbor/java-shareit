@@ -30,7 +30,7 @@ public class ExceptionsHandler {
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity <ErrorMessage> onConstraintValidationException(
+    public ResponseEntity<ErrorMessage> onConstraintValidationException(
             ConstraintViolationException exception) {
         log.error(exception.getMessage(), exception);
         return ResponseEntity
