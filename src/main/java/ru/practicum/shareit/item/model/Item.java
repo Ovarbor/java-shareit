@@ -36,4 +36,9 @@ public class Item {
       Item item = (Item) o;
       return id != null && Objects.equals(id, item.id);
    }
+
+   @Override
+   public int hashCode() {
+      return getClass().hashCode();
+   }
 }
