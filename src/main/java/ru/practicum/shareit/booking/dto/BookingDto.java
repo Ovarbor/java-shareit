@@ -19,6 +19,7 @@ public class BookingDto {
     private BookingDtoItem item;
     private BookingDtoBooker booker;
     private Status status;
+<<<<<<< HEAD
 
     public Long getItemId() {
         return item.getId();
@@ -27,4 +28,6 @@ public class BookingDto {
     public Long getBookerId() {
         return booker.getId();
     }
+=======
+>>>>>>> bb4082fcd0f4558ce93b4e2a8023a6df1366e0fe
 }

@@ -13,6 +13,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemDto {
+<<<<<<< HEAD
+=======
+
+>>>>>>> bb4082fcd0f4558ce93b4e2a8023a6df1366e0fe
     private Long id;
     @NotBlank
     private String name;

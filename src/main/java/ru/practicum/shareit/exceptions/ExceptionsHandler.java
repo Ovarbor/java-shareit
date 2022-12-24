@@ -6,8 +6,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+<<<<<<< HEAD
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import javax.validation.ConstraintViolationException;
+=======
+>>>>>>> bb4082fcd0f4558ce93b4e2a8023a6df1366e0fe
 
 @Slf4j
 @RestControllerAdvice
@@ -29,6 +32,7 @@ public class ExceptionsHandler {
                 .body(new ErrorMessage(exception.getMessage()));
     }
 
+<<<<<<< HEAD
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity <ErrorMessage> onConstraintValidationException(
             ConstraintViolationException exception) {
@@ -38,6 +42,8 @@ public class ExceptionsHandler {
                 .body(new ErrorMessage(exception.getMessage()));
     }
 
+=======
+>>>>>>> bb4082fcd0f4558ce93b4e2a8023a6df1366e0fe
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<ErrorMessage> conflictException(ConflictException exception) {
         log.warn(exception.getMessage(), exception);
@@ -46,6 +52,7 @@ public class ExceptionsHandler {
                 .body(new ErrorMessage(exception.getMessage()));
     }
 
+<<<<<<< HEAD
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<Error> handleMethodArgumentTypeMismatch(final MethodArgumentTypeMismatchException exception) {
         final String error = "Unknown " + exception.getName() + ": " + exception.getValue();
@@ -66,5 +73,12 @@ public class ExceptionsHandler {
     public static class ErrorMessage {
         private final String message;
     }
+=======
+    @Getter
+    @RequiredArgsConstructor
+    static class ErrorMessage {
+        private final String error;
+    }
+>>>>>>> bb4082fcd0f4558ce93b4e2a8023a6df1366e0fe
 }
 
