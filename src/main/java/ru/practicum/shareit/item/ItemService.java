@@ -99,7 +99,7 @@ public class ItemService {
     @Transactional
     public void removeItem(Long id) {
         log.info("Item deleted " + id);
-       itemRepository.deleteById(id);
+        itemRepository.deleteById(id);
     }
 
     @Transactional

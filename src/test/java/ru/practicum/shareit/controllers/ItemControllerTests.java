@@ -243,10 +243,10 @@ public class ItemControllerTests {
     @Test
     void testSearchTextBlank() throws Exception {
         when(service.search(Mockito.anyString(), Mockito.anyInt(), Mockito.anyInt()))
-                .thenReturn(addToItemDtoList());
+                .thenReturn(new ArrayList<>());
         mvc.perform(get("/items/search")
                         .header("X-Sharer-User-Id", 1)
-                        .param("text", "   ")
+                        .param("text", " ")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)));

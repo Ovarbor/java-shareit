@@ -7,11 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.CreateItemRequest;
 import ru.practicum.shareit.item.dto.ItemDto;
-
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
-import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -38,7 +36,6 @@ public class ItemController {
     public ResponseEntity<List<ItemDto>> search(@RequestParam("text") String text,
                                 @RequestParam(value = "from", defaultValue = "0") @PositiveOrZero Integer from,
                                 @RequestParam(value = "size", defaultValue = "20") @Positive Integer size) {
-        if (text.isBlank()) return ResponseEntity.ok().body(Collections.emptyList());
         return ResponseEntity.ok().body(itemService.search(text, from, size));
     }
 
@@ -55,11 +52,10 @@ public class ItemController {
     }
 
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public List<ItemDto> getAll(@RequestHeader("X-Sharer-User-Id") Long ownerId,
+    public ResponseEntity<List<ItemDto>> getAll(@RequestHeader("X-Sharer-User-Id") Long ownerId,
                                 @RequestParam(value = "from", defaultValue = "0") @PositiveOrZero Integer from,
                                 @RequestParam(value = "size", defaultValue = "20") @Positive Integer size) {
-        return itemService.getAllByOwnerId(ownerId, from, size);
+        return ResponseEntity.ok().body(itemService.getAllByOwnerId(ownerId, from, size));
     }
 
     @PostMapping("/{itemId}/comment")

@@ -1,6 +1,6 @@
 package ru.practicum.shareit.request;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -14,14 +14,10 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/requests")
 @Validated
+@RequiredArgsConstructor
 public class ItemRequestController {
 
     private final ItemRequestService service;
-
-    @Autowired
-    public ItemRequestController(ItemRequestService service) {
-        this.service = service;
-    }
 
     @PostMapping
     public ResponseEntity<ItemRequestDto> create(@RequestBody @Valid ItemRequestDto request,
