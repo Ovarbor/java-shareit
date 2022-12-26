@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exceptions.NotFoundValidationException;
 import ru.practicum.shareit.user.dto.UserDto;
+import ru.practicum.shareit.user.dto.UserDtoUpdate;
 import ru.practicum.shareit.user.model.User;
 import java.util.List;
 
@@ -23,12 +24,12 @@ public class UserService {
     }
 
     @Transactional
-    public UserDto updateUser(Long id, UserDto userDto) {
+    public UserDtoUpdate updateUser(Long id, UserDtoUpdate userDto) {
         User oldUser = userRepository.findById(id).orElseThrow(() ->
                 new NotFoundValidationException("User with id: " + userDto.getId() + " not found."));
         User updatedUser = userNameAndEmailUpdate(oldUser, userDto);
         log.info("User with id: " + userDto.getId() + " updated");
-        return userMapper.toUserDto(updatedUser);
+        return userMapper.toUserDtoUpdate(updatedUser);
     }
 
     @Transactional(readOnly = true)
@@ -39,19 +40,17 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserDto getUser(Long id) {
         User user = userRepository.findById(id).orElseThrow(() ->
-                new NotFoundValidationException("User with id: " + id + "not found"));
+                new NotFoundValidationException("User with id: " + id + " not found"));
         return userMapper.toUserDto(user);
     }
 
     @Transactional
     public void removeUser(Long id) {
-        userRepository
-                .findById(id)
-                .orElseThrow(() -> new NotFoundValidationException("User with id: " + id + "not found"));
+        log.info("User with id: " + id + " deleted");
         userRepository.deleteById(id);
     }
 
-    private User userNameAndEmailUpdate(User oldUser, UserDto user) {
+    private User userNameAndEmailUpdate(User oldUser, UserDtoUpdate user) {
         if (user.getEmail() != null) {
             if (!user.getEmail().isBlank()) {
                 oldUser.setEmail(user.getEmail());

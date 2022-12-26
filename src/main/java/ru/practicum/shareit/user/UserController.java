@@ -4,6 +4,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.user.dto.UserDto;
+import ru.practicum.shareit.user.dto.UserDtoUpdate;
+
 import javax.validation.Valid;
 import java.util.List;
 
@@ -20,7 +22,8 @@ public class UserController {
     }
 
     @PatchMapping("/{userId}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable Long userId, @RequestBody UserDto userDto) {
+    public ResponseEntity<UserDtoUpdate> updateUser(@PathVariable Long userId,
+                                                    @Valid @RequestBody UserDtoUpdate userDto) {
         return ResponseEntity.ok().body(userService.updateUser(userId, userDto));
     }
 

@@ -19,4 +19,12 @@ public class BookingDto {
     private BookingDtoItem item;
     private BookingDtoBooker booker;
     private Status status;
+
+    public Long getItemId() {
+        return item.getId();
+    }
+
+    public Long getBookerId() {
+        return booker.getId();
+    }
 }

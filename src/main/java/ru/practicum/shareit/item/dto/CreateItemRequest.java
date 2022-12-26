@@ -3,18 +3,19 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDateTime;
+import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CommentDto {
+public class CreateItemRequest {
 
     private Long id;
     @NotBlank
-    private String text;
-    private Long itemId;
-    private String authorName;
-    private LocalDateTime creat;
-
+    private String name;
+    @NotBlank
+    private String description;
+    @NotNull
+    private Boolean available;
+    private Long requestId;
 }
