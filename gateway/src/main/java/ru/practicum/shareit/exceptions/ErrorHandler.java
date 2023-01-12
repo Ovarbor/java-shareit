@@ -12,6 +12,7 @@ import java.util.Map;
 @RestControllerAdvice
 @Slf4j
 public class ErrorHandler {
+
     @ExceptionHandler
     public ResponseEntity<String> handleOtherException(final Throwable e) {
         log.debug("OtherException");

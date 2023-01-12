@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.client.BaseClient;
+import ru.practicum.shareit.exceptions.DatesAreNotCorrectException;
 
 import java.util.Map;
 
@@ -27,6 +28,7 @@ public class BookingClient extends BaseClient {
     }
 
     public ResponseEntity<Object> createNewBooking(BookingDto bookingDto, Long userId) {
+        checkDates(bookingDto);
         return post("", userId, bookingDto);
     }
 
@@ -35,9 +37,12 @@ public class BookingClient extends BaseClient {
         return patch("/" + bookingId + "?approved={approved}", userId, parameters, null);
     }
 
-    public ResponseEntity<Object> getAllBookingsByUserId(Long userId, BookingState state, Integer from, Integer size) {
+    public ResponseEntity<Object> getAllBookingsByUserId(Long userId, String state, Integer from, Integer size) {
+        if (from == null || size == null) {
+            return get("?state=" + state, userId);
+        }
         Map<String, Object> parameters = Map.of(
-                "state", state.name(),
+                "state", state,
                 "from", from,
                 "size", size
         );
@@ -48,12 +53,22 @@ public class BookingClient extends BaseClient {
         return get("/" + bookingId, userId);
     }
 
-    public ResponseEntity<Object> getAllBookingsOfCurrentUserItems(Long userId, BookingState state, Integer from, Integer size) {
+    public ResponseEntity<Object> getAllBookingsOfCurrentUserItems(Long userId, String state, Integer from, Integer size) {
+        if (from == null || size == null) {
+            return get("?state=" + state, userId);
+        }
         Map<String, Object> parameters = Map.of(
-                "state", state.name(),
+                "state", state,
                 "from", from,
                 "size", size
         );
+
         return get("/owner?state={state}&from={from}&size={size}", userId, parameters);
+    }
+
+    private void checkDates(BookingDto booking) {
+        if (!booking.getStart().isBefore(booking.getEnd())) {
+            throw new DatesAreNotCorrectException("Дата начала после даты окончания");
+        }
     }
 }
