@@ -37,7 +37,7 @@ public class BookingService {
         Item item = itemRepository.findById(request.getItemId()).orElseThrow(() ->
                 new NotFoundValidationException("The item is not available for booking by owner."));
         if (item.getOwner().getId().equals(requesterId))
-            throw new NotFoundValidationException("Booking your item? Why?");
+            throw new NotFoundValidationException("Item is already yours");
         if (item.getAvailable().equals(Boolean.FALSE))
             throw new IllegalRequestException("This item not available.");
         if (!request.getStart().isBefore(request.getEnd()))
@@ -83,12 +83,11 @@ public class BookingService {
     }
 
     @Transactional(readOnly = true)
-    public List<BookingDto> getAllByUser(String state, Long userId, Integer from, Integer size) {
+    public List<BookingDto> getAllByUser(RequestStatus state, Long userId, Integer from, Integer size) {
         if (userRepository.findById(userId).isEmpty())
             throw new NotFoundValidationException("Requester with id: " + userId + " not found");
-        RequestStatus requestStatus = RequestStatus.parseState(state);
         Pageable page = PageRequest.of(from / size, size, Sort.by("start").descending());
-        switch (requestStatus) {
+        switch (state) {
             case ALL:
                 if (bookingRepository.findByBookerId(userId, page).isEmpty()) {
                     return new ArrayList<>();
@@ -142,15 +141,14 @@ public class BookingService {
     }
 
     @Transactional(readOnly = true)
-    public List<BookingDto> getAllByUserOwner(String state, Long userId, Integer from, Integer size) {
+    public List<BookingDto> getAllByUserOwner(RequestStatus state, Long userId, Integer from, Integer size) {
         userRepository
                 .findById(userId)
                 .orElseThrow(() -> new NotFoundValidationException("Requester with id: " + userId + " not found"));
-        RequestStatus requestStatus = RequestStatus.parseState(state);
         List<Item> userItems = itemRepository.findByOwnerId(userId);
         List<Long> userItemsIds = userItems.stream().map(Item::getId).collect(Collectors.toList());
         Pageable page = PageRequest.of(from / size, size, Sort.by("start").descending());
-        switch (requestStatus) {
+        switch (state) {
             case ALL:
                 return bookingMapper.toBookingDtoList(bookingRepository.findByItemIdIn(userItemsIds, page));
             case CURRENT:

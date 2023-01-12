@@ -12,6 +12,7 @@ import ru.practicum.shareit.booking.model.Status;
 import ru.practicum.shareit.exceptions.IllegalRequestException;
 import ru.practicum.shareit.exceptions.NotFoundValidationException;
 import ru.practicum.shareit.item.dto.CommentDto;
+import ru.practicum.shareit.item.dto.CreateItemRequest;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
@@ -35,7 +36,7 @@ public class ItemService {
     private final CommentMapper commentMapper;
 
     @Transactional
-    public ItemDto createItem(ItemDto itemDto, Long userId) {
+    public ItemDto createItem(CreateItemRequest itemDto, Long userId) {
         User owner = userRepository.findById(userId).orElseThrow(() ->
                 new NotFoundValidationException("Owner with id: " + userId + " not found"));
         Item newItem = itemMapper.toItem(itemDto);
@@ -45,7 +46,7 @@ public class ItemService {
     }
 
     @Transactional
-    public ItemDto updateItem(ItemDto itemDto, Long itemId, Long userId) {
+    public ItemDto updateItem(CreateItemRequest itemDto, Long itemId, Long userId) {
         Item oldItem = itemRepository.findById(itemId).orElseThrow(() ->
                 new NotFoundValidationException("Item with id: " + itemId + " not found"));
         if (!Objects.equals(oldItem.getOwner().getId(), userId))
@@ -57,17 +58,18 @@ public class ItemService {
     }
 
     @Transactional(readOnly = true)
-    public List<ItemDto> getAllItemsByUserId(Long userId) {
-        List<ItemDto> itemDtos = itemRepository.findAll()
-                .stream()
-                .filter(i -> Objects.equals(i.getOwner().getId(), userId))
-                .map(itemMapper::toItemDto)
-                .collect(Collectors.toList());
-        for (ItemDto itemDto : itemDtos) {
+    public List<ItemDto> getAllByOwnerId(Long ownerId, Integer from, Integer size) {
+        userRepository
+                .findById(ownerId)
+                .orElseThrow(() -> new NotFoundValidationException("Owner with id: " + ownerId + " not found"));
+        log.info("Found owner (id:{}), return items.", ownerId);
+        Pageable page = PageRequest.of(from / size, size);
+        List<ItemDto> itemsList = itemMapper.toDtoList(itemRepository.findByOwnerId(ownerId, page));
+        for (ItemDto itemDto : itemsList) {
             addBooking(itemDto);
             addComment(itemDto);
         }
-        return itemDtos;
+        return itemsList;
     }
 
     @Transactional(readOnly = true)
@@ -96,10 +98,8 @@ public class ItemService {
 
     @Transactional
     public void removeItem(Long id) {
-       itemRepository
-               .findById(id)
-               .orElseThrow(() -> new NotFoundValidationException("User with id: " + id + "not found"));
-       itemRepository.deleteById(id);
+        log.info("Item deleted " + id);
+        itemRepository.deleteById(id);
     }
 
     @Transactional

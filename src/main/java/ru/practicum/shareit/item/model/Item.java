@@ -29,15 +29,6 @@ public class Item {
    @Column(name = "request_id")
    private Long requestId;
 
-   public Item(Item newItem) {
-      this.setId(newItem.getId());
-      this.setName(newItem.getName());
-      this.setDescription(newItem.getDescription());
-      this.setAvailable(newItem.getAvailable());
-      this.setOwner(newItem.getOwner());
-      this.setRequestId(newItem.getRequestId());
-   }
-
    @Override
    public boolean equals(Object o) {
       if (this == o) return true;
