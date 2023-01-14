@@ -71,7 +71,6 @@ public class ItemService {
             addBooking(itemDto);
             addComment(itemDto);
         }
-//        itemsList.sort(new ItemDto.MyComparator());
         return itemsList;
     }
 

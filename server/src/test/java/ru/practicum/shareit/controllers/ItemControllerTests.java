@@ -37,13 +37,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ItemControllerTests {
 
     @Autowired
-    ObjectMapper mapper;
+    private ObjectMapper mapper;
+
     @MockBean
-    ItemService service;
+    private ItemService service;
+
     @Autowired
     private MockMvc mvc;
-    ItemMapper itemMapper = new ItemMapperImpl();
-    LocalDateTime moment = LocalDateTime.now();
+
+    private final ItemMapper itemMapper = new ItemMapperImpl();
+    private final LocalDateTime moment = LocalDateTime.now();
 
     private final CreateItemRequest itemRequest1 =
             new CreateItemRequest(1L, "itemReq", "itemReqDisc", Boolean.TRUE, null);
@@ -53,7 +56,6 @@ public class ItemControllerTests {
             null, null, null, null, null);
     private final CommentDto commentDto1 =
             new CommentDto(1L, "comment", 2L, "author", moment);
-
 
     @Test
     void testCheckMapper() {

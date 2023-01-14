@@ -36,18 +36,18 @@ import static org.mockito.Mockito.verify;
 public class ItemServiceTests {
 
     @Mock
-    ItemRepository mockItemRepo;
+    private ItemRepository mockItemRepo;
     @Mock
-    UserRepository mockUserRepo;
+    private UserRepository mockUserRepo;
     ItemMapper itemMapper = new ItemMapperImpl();
     @Mock
-    BookingRepository mockBookingRepo;
-    BookingMapper bookingMapper = new BookingMapperImpl();
-    CommentMapper commentMapper = new CommentMapperImpl();
+    private BookingRepository mockBookingRepo;
+    private final BookingMapper bookingMapper = new BookingMapperImpl();
+    private final CommentMapper commentMapper = new CommentMapperImpl();
     @Mock
-    CommentRepository mockCommentRepo;
-    ItemService service;
-    LocalDateTime moment = LocalDateTime.now();
+    private CommentRepository mockCommentRepo;
+    private ItemService service;
+    private final LocalDateTime moment = LocalDateTime.now();
 
     @BeforeEach
     void makeService() {

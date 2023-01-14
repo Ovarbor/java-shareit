@@ -39,10 +39,13 @@ public class BookingControllerTests {
 
     @Autowired
     private ObjectMapper mapper;
+
     @MockBean
     private BookingService service;
+
     @Autowired
     private MockMvc mvc;
+
     private final BookingMapper bookingMapper = new BookingMapperImpl();
     private final LocalDateTime moment = LocalDateTime.now();
     private final BookingRequest bookingRequest1 = new BookingRequest(1L, moment.plusHours(1), moment.plusDays(1));

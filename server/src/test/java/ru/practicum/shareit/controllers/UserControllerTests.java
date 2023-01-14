@@ -36,7 +36,7 @@ public class UserControllerTests {
     private MockMvc mvc;
 
     @MockBean
-    UserService service;
+    private UserService service;
 
     private final UserDto userDto1 = new UserDto(1L, "user1", "email@email1.com");
     private final UserDto userDto2 = new UserDto(2L, "user2", "email@email2.com");

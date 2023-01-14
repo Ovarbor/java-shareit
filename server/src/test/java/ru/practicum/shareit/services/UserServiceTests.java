@@ -30,6 +30,11 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTests {
 
+    @Mock
+    private UserRepository mockUserRepo;
+    private final UserMapper userMapper = new UserMapperImpl();
+    private UserService service;
+
     private final User user1 = new User(1L, "user1", "@mail1.ru");
     private final User user2 = new User(2L, "user2", "@mail2.ru");
 
@@ -39,11 +44,6 @@ public class UserServiceTests {
         users.add(user2);
         return users;
     }
-
-    @Mock
-    UserRepository mockUserRepo;
-    UserMapper userMapper = new UserMapperImpl();
-    UserService service;
 
     @BeforeEach
     void makeService() {

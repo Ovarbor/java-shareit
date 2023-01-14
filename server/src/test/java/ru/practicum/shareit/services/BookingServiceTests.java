@@ -35,15 +35,15 @@ import static org.junit.jupiter.api.Assertions.*;
 public class BookingServiceTests {
 
     @Mock
-    BookingRepository mockBookingRepo;
+    private BookingRepository mockBookingRepo;
     @Mock
-    ItemRepository mockItemRepo;
+    private ItemRepository mockItemRepo;
     @Mock
-    UserRepository mockUserRepo;
-    BookingService service;
-    BookingMapper mapper = new BookingMapperImpl();
+    private UserRepository mockUserRepo;
+    private BookingService service;
 
-    LocalDateTime moment = LocalDateTime.now();
+    private final BookingMapper mapper = new BookingMapperImpl();
+    private final LocalDateTime moment = LocalDateTime.now();
 
     private final User owner = new User(1L, "user1", "@mail1.ru");
     private final User booker = new User(2L, "user2", "@mail2.ru");

@@ -32,13 +32,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ItemRequestControllerTests {
 
     @Autowired
-    ObjectMapper mapper;
+    private ObjectMapper mapper;
+
     @MockBean
-    ItemRequestService service;
+    private ItemRequestService service;
+
     @Autowired
     private MockMvc mvc;
-    ItemRequestMapper itemRequestMapper = new ItemRequestMapperImpl();
-    LocalDateTime moment = LocalDateTime.now();
+
+    private final ItemRequestMapper itemRequestMapper = new ItemRequestMapperImpl();
+    private final LocalDateTime moment = LocalDateTime.now();
 
     private final ItemRequest itemRequest1 =
             new ItemRequest(1L, "desc", null, moment.plusDays(1L));

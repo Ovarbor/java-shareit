@@ -27,11 +27,4 @@ public class ItemDto {
     private BookingDtoShort lastBooking;
     private BookingDtoShort nextBooking;
     private List<CommentDto> comments;
-
-//    public static class MyComparator implements Comparator<ItemDto> {
-//        @Override
-//        public int compare(ItemDto o1, ItemDto o2) {
-//            return Long.compare(o1.getId(), o2.getId());
-//        }
-//    }
 }

@@ -36,15 +36,15 @@ import static org.mockito.Mockito.when;
 public class ItemRequestServiceTests {
 
     @Mock
-    ItemRequestRepository mockRepo;
+    private ItemRequestRepository mockRepo;
     @Mock
-    UserRepository mockUserRepo;
-    ItemRequestMapper mapper = new ItemRequestMapperImpl();
+    private UserRepository mockUserRepo;
+    private final ItemRequestMapper mapper = new ItemRequestMapperImpl();
     @Mock
-    ItemRepository mockItemRepo;
-    ItemMapper itemMapper = new ItemMapperImpl();
-    ItemRequestService service;
-    LocalDateTime moment = LocalDateTime.now();
+    private ItemRepository mockItemRepo;
+    private final ItemMapper itemMapper = new ItemMapperImpl();
+    private ItemRequestService service;
+    private final LocalDateTime moment = LocalDateTime.now();
 
     @BeforeEach
     void makeService() {
