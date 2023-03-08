@@ -47,7 +47,7 @@ gateway (controller, validates input data) + server (main logic).
   <img src="server/src/main/resources/logos/Mockito.png" title="Mockito" alt="Mockito" width="70" height="40"/>&nbsp;
 </a>
 <a href="https://www.docker.com/">
-  <img src="server/src/main/resources/logos/Docker.png" title="Docker" alt="Docker" width="70" height="40"/>&nbsp;
+  <img src="server/src/main/resources/logos/Docker.png" title="Docker" alt="Docker" width="120" height="40"/>&nbsp;
 </a>
 
 ### System requirements:
