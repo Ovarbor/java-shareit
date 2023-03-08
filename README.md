@@ -28,13 +28,13 @@ gateway (controller, validates input data) + server (main logic).
   <img src="server/src/main/resources/logos/JPA.png" title="JPA" alt="JPA" width="70" height="40"/>&nbsp;
 </a>
 <a href="https://hibernate.org/">
-  <img src="server/src/main/resources/logos/Spring.png" title="Hibernate" alt="Hibernate" width="70" height="40"/>&nbsp;
+  <img src="server/src/main/resources/logos/Hibernate.png" title="Hibernate" alt="Hibernate" width="70" height="40"/>&nbsp;
 </a>
 <a href="https://projectlombok.org/">
   <img src="server/src/main/resources/logos/Lombok.png" title="Lombok" alt="Lombok" width="40" height="40"/>&nbsp;
 </a>
 <a href="https://mapstruct.org/">
-  <img src="server/src/main/resources/logos/Spring.png" title="Mapstruct" alt="Mapstruct" width="70" height="40"/>&nbsp;
+  <img src="server/src/main/resources/logos/Mapstruct.png" title="Mapstruct" alt="Mapstruct" width="70" height="40"/>&nbsp;
 </a>
 
 [//]: # (<a href="https://junit.org/junit5/">)
@@ -47,7 +47,7 @@ gateway (controller, validates input data) + server (main logic).
   <img src="server/src/main/resources/logos/Mockito.png" title="Mockito" alt="Mockito" width="70" height="40"/>&nbsp;
 </a>
 <a href="https://www.docker.com/">
-  <img src="server/src/main/resources/logos/Spring.png" title="Docker" alt="Docker" width="70" height="40"/>&nbsp;
+  <img src="server/src/main/resources/logos/Docker.png" title="Docker" alt="Docker" width="70" height="40"/>&nbsp;
 </a>
 
 ### System requirements:
