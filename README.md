@@ -11,7 +11,9 @@ add new item to share on request, if the desired item is not available.
 4. After using the item, users can leave feedback.
 
 ### Project structure: 
+
 gateway (controller, validates input data) + server (main logic).
+
 ![Schema DB](server/src/main/resources/schema.png)
 
 ### Technology stack:
