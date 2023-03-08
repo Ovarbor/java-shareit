@@ -16,9 +16,11 @@
 **Стек технологий:** Java 11, Spring Boot, Spring Data, Spring Rest Template, PostgreSQL, Docker, Lombok, Mapstruct, Spring AOP, JUnit, Mockito.
 
 **Инструкция по развертыванию проекта:**
-1. Clone c github
-2. mvn clean package
-3. docker-compose up
+1. Загрузить zip-файл c github
+2. Распаковать zip-файл
+3. Открыть проект в IntellijIdea
+4. mvn clean package
+5. docker-compose up
 
 
 
