@@ -34,7 +34,7 @@ gateway (controller, validates input data) + server (main logic).
   <img src="server/src/main/resources/logos/Lombok.png" title="Lombok" alt="Lombok" width="40" height="40"/>&nbsp;
 </a>
 <a href="https://mapstruct.org/">
-  <img src="server/src/main/resources/logos/Mapstruct.png" title="Mapstruct" alt="Mapstruct" width="80" height="40"/>&nbsp;
+  <img src="server/src/main/resources/logos/mapstruct.png" title="Mapstruct" alt="Mapstruct" width="80" height="40"/>&nbsp;
 </a>
 
 [//]: # (<a href="https://junit.org/junit5/">)
