@@ -10,16 +10,56 @@ add new item to share on request, if the desired item is not available.
 3. If the desired item is not found in the search, the user can create a request. The other users can add desire item.
 4. After using the item, users can leave feedback.
 
-**Структура проекта:** gateway (контроллер, который осуществляет валидацию входных данных) + server (серверная часть приложения).
+### Project structure: 
+gateway (controller, validates input data) + server (main logic).
+![Schema DB](server/src/main/resources/schema.png)
+
 
 **Стек технологий:** Java 11, Spring Boot, Spring Data, Spring Rest Template, PostgreSQL, Docker, Lombok, Mapstruct, Spring AOP, JUnit, Mockito.
 
-**Инструкция по развертыванию проекта:**
-1. Загрузить zip-файл c github
-2. Распаковать zip-файл
-3. Открыть проект в IntellijIdea
+### Technology stack:
+<a href="https://spring.io/">
+  <img src="server/src/main/resources/logos/Spring.png" title="Spring" alt="Spring" width="80" height="40"/>&nbsp;
+</a>
+<a href="https://maven.apache.org/">
+  <img src="server/src/main/resources/logos/Maven.png" title="Maven" alt="Maven" width="40" height="40"/>&nbsp;
+</a>
+<a href="https://www.postgresql.org/">
+  <img src="server/src/main/resources/logos/Postgresql.png" title="postgreSQL" alt="postgreSQL" width="40" height="40"/>&nbsp;
+</a>
+<a href="https://www.baeldung.com/the-persistence-layer-with-spring-data-jpa">
+  <img src="server/src/main/resources/logos/JPA.png" title="JPA" alt="JPA" width="70" height="40"/>&nbsp;
+</a>
+<a href="https://hibernate.org/">
+  <img src="server/src/main/resources/logos/Hibernate.png" title="Hibernate" alt="Hibernate" width="70" height="40"/>&nbsp;
+</a>
+<a href="https://projectlombok.org/">
+  <img src="server/src/main/resources/logos/Lombok.png" title="Lombok" alt="Lombok" width="40" height="40"/>&nbsp;
+</a>
+<a href="https://mapstruct.org/">
+  <img src="server/src/main/resources/logos/mapstruct.png" title="Mapstruct" alt="Mapstruct" width="40" height="40"/>&nbsp;
+</a>
+
+[//]: # (<a href="https://junit.org/junit5/">)
+
+[//]: # (  <img src="server/src/main/resources/logos/JUnit.png" title="JUnit" alt="JUnit" width="40" height="40"/>&nbsp;)
+
+[//]: # (</a>)
+
+<a href="https://site.mockito.org/">
+  <img src="server/src/main/resources/logos/Mockito.png" title="Mockito" alt="Mockito" width="70" height="40"/>&nbsp;
+</a>
+<a href="https://www.docker.com/">
+  <img src="server/src/main/resources/logos/Docker.png" title="Docker" alt="Docker" width="70" height="40"/>&nbsp;
+</a>
+
+### System requirements:
+JDK 11 amazon corretto  
+IntellijIdea
+
+### Startup instructions:
+1. Download zip-file  
+2. Unpack zip-файл  
+3. Open app in IntellijIdea  
 4. mvn clean package
 5. docker-compose up
-
-### Планирую доработать приложение, реализовав следующую функциональность:
-Составление рейтинга пользователей.
