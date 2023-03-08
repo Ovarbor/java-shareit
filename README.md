@@ -14,9 +14,6 @@ add new item to share on request, if the desired item is not available.
 gateway (controller, validates input data) + server (main logic).
 ![Schema DB](server/src/main/resources/schema.png)
 
-
-**Стек технологий:** Java 11, Spring Boot, Spring Data, Spring Rest Template, PostgreSQL, Docker, Lombok, Mapstruct, Spring AOP, JUnit, Mockito.
-
 ### Technology stack:
 <a href="https://spring.io/">
   <img src="server/src/main/resources/logos/Spring.png" title="Spring" alt="Spring" width="80" height="40"/>&nbsp;
@@ -37,7 +34,7 @@ gateway (controller, validates input data) + server (main logic).
   <img src="server/src/main/resources/logos/Lombok.png" title="Lombok" alt="Lombok" width="40" height="40"/>&nbsp;
 </a>
 <a href="https://mapstruct.org/">
-  <img src="server/src/main/resources/logos/mapstruct.png" title="Mapstruct" alt="Mapstruct" width="40" height="40"/>&nbsp;
+  <img src="server/src/main/resources/logos/mapstruct.png" title="Mapstruct" alt="Mapstruct" width="70" height="40"/>&nbsp;
 </a>
 
 [//]: # (<a href="https://junit.org/junit5/">)
