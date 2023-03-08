@@ -1,17 +1,16 @@
-## Shareit project - сервис для шеринга вещей
+## Shareit - backend service for sharing items.
 
-Проект открывает для пользователей новые возможности: рассказывать, какими вещами они готовы поделиться, находить нужную вещь и брать её в аренду на определённое время, закрывая к ней доступ на время бронирования от других желающих.
-На случай, если нужной вещи на сервисе нет, у пользователей должна быть возможность оставлять запросы. По запросу можно будет добавлять новые вещи для шеринга.
+Shareit allows you to book item for certain dates, close access to items at the time of booking,
+add new item to share on request, if the desired item is not available.
+
+### Functional:
+
+1. User can add new items and will be considered its owner, also can add name, description to this item.
+2. You can search for item you need. The item is booked for certain dates. The owner of the item must confirm the booking.
+3. If the desired item is not found in the search, the user can create a request. The other users can add desire item.
+4. After using the item, users can leave feedback.
 
 **Структура проекта:** gateway (контроллер, который осуществляет валидацию входных данных) + server (серверная часть приложения).
-
-### Функционал:
-
-1. Пользователь, который добавляет в приложение новую вещь, будет считаться ее владельцем. При добавлении вещи должна быть возможность указать её краткое название и добавить небольшое описание.
-2. Для поиска вещей организован поиск. Чтобы воспользоваться нужной вещью, её требуется забронировать. Бронируется вещь всегда на определённые даты. Владелец вещи обязательно должен подтвердить бронирование.
-3. Пользователь создаёт запрос, если нужная ему вещь не найдена при поиске. В запросе указывается, что именно он ищет. В ответ на запрос другие пользовали могут добавить нужную вещь.
-4. Создать запись о предмете в ответ на запрос.
-5. После того как вещь возвращена, у пользователя, который её арендовал, существует возможность оставить отзыв. В отзыве можно поблагодарить владельца вещи и подтвердить, что задача выполнена.
 
 **Стек технологий:** Java 11, Spring Boot, Spring Data, Spring Rest Template, PostgreSQL, Docker, Lombok, Mapstruct, Spring AOP, JUnit, Mockito.
 
@@ -21,8 +20,6 @@
 3. Открыть проект в IntellijIdea
 4. mvn clean package
 5. docker-compose up
-
-
 
 ### Планирую доработать приложение, реализовав следующую функциональность:
 Составление рейтинга пользователей.
