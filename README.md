@@ -36,13 +36,6 @@ gateway (controller, validates input data) + server (main logic).
 <a href="https://mapstruct.org/">
   <img src="server/src/main/resources/logos/mapstruct.png" title="Mapstruct" alt="Mapstruct" width="80" height="40"/>&nbsp;
 </a>
-
-[//]: # (<a href="https://junit.org/junit5/">)
-
-[//]: # (  <img src="server/src/main/resources/logos/JUnit.png" title="JUnit" alt="JUnit" width="40" height="40"/>&nbsp;)
-
-[//]: # (</a>)
-
 <a href="https://site.mockito.org/">
   <img src="server/src/main/resources/logos/Mockito.png" title="Mockito" alt="Mockito" width="70" height="40"/>&nbsp;
 </a>
