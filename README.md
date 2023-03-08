@@ -53,3 +53,4 @@ IntellijIdea
 3. Open app in IntellijIdea  
 4. mvn clean package
 5. docker-compose up
+6. Test app with postman tests collection in postman package

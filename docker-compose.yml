@@ -5,6 +5,7 @@ services:
     container_name: gateway
     ports:
       - "8080:8080"
+    restart: on-failure
     depends_on:
       - db
       - server
@@ -16,6 +17,7 @@ services:
     container_name: server
     ports:
       - "9090:9090"
+    restart: on-failure
     depends_on:
       - db
     environment:
