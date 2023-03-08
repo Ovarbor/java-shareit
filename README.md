@@ -19,7 +19,7 @@ gateway (controller, validates input data) + server (main logic).
   <img src="server/src/main/resources/logos/Spring.png" title="Spring" alt="Spring" width="80" height="40"/>&nbsp;
 </a>
 <a href="https://maven.apache.org/">
-  <img src="server/src/main/resources/logos/Spring.png" title="Maven" alt="Maven" width="80" height="40"/>&nbsp;
+  <img src="server/src/main/resources/logos/Maven.png" title="Maven" alt="Maven" width="80" height="40"/>&nbsp;
 </a>
 <a href="https://www.postgresql.org/">
   <img src="server/src/main/resources/logos/Postgresql.png" title="postgreSQL" alt="postgreSQL" width="40" height="40"/>&nbsp;
