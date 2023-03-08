@@ -19,10 +19,10 @@ services:
     depends_on:
       - db
     environment:
-#      - TZ=Europe/Moscow
+      - TZ=Europe/Moscow
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/shareit
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=zig123big
+      - POSTGRES_PASSWORD=123456
 
   db:
     image: postgres:13.7-alpine
@@ -34,4 +34,4 @@ services:
     environment:
       - POSTGRES_DB=shareit
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=zig123big
+      - POSTGRES_PASSWORD=123456
