@@ -33,7 +33,9 @@ gateway (controller, validates input data) + server (main logic).
 <a href="https://projectlombok.org/">
   <img src="server/src/main/resources/logos/Lombok.png" title="Lombok" alt="Lombok" width="40" height="40"/>&nbsp;
 </a>
-
+<a href="https://mapstruct.org/">
+  <img src="server/src/main/resources/logos/Mapstruct.png" title="Mapstruct" alt="Mapstruct"/>&nbsp;
+</a>
 
 [//]: # (<a href="https://junit.org/junit5/">)
 
@@ -46,10 +48,6 @@ gateway (controller, validates input data) + server (main logic).
 </a>
 <a href="https://www.docker.com/">
   <img src="server/src/main/resources/logos/Docker.png" title="Docker" alt="Docker" width="120" height="40"/>&nbsp;
-</a>
-
-<a href="https://mapstruct.org/">
-  <img src="server/src/main/resources/logos/Mapstruct.png" title="Mapstruct" alt="Mapstruct"/>&nbsp;
 </a>
 
 ### System requirements:
